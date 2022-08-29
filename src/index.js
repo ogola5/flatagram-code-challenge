@@ -11,13 +11,12 @@ let like;
 
 let images = [];
 
-const getImages = () => {
-  return fetch("http://localhost:3000/images").then((response) =>
-    response.json()
-  );
+const lookImages = async () => {
+  const response = await fetch("http://localhost:3000/images");
+  return await response.json();
 };
 
-function updateUI() {
+function updatePage() {
   images.forEach((image) => {
     imageTitle.textContent = image.title;
     imageContainer.src = image.image;
@@ -30,15 +29,15 @@ function showCommentOnDOM(comment) {
   listComments.append(commentList);
 }
 
-let usercomments = [];
-const getComments = () => {
-  return fetch("http://localhost:3000/comments").then((response) =>
-    response.json()
-  );
+let userComments = [];
+const lookComments = async () => {
+  const response = await fetch("http://localhost:3000/comments");
+  return await response.json();
 };
 
+
 function updateComments() {
-  usercomments.forEach((comment) => {
+  userComments.forEach((comment) => {
     const commentList = document.createElement("li");
     commentList.textContent = comment.content;
     listComments.append(commentList);
@@ -57,11 +56,12 @@ function postComments(comment) {
   });
 }
 document.addEventListener("DOMContentLoaded", async () => {
-  images = await getImages();
+  let getComments = document.createElement('li')
+  images = await lookImages();
   console.log(images[0].likes);
-  updateUI(images);
-  usercomments = await getComments();
-  updateComments(usercomments);
+  updatePage(images);
+  userComments = await getComments();
+  updateComments(userComments);
 
   likeButton.addEventListener("click", () => {
     like = images[0].likes;
